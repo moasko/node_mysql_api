@@ -2,11 +2,11 @@ const sql = require('../config/DB.connect');
 const crud = require('../config/crud')
 
 
-exports.getAll = async(req, res) => {
+exports.getAllProducts = async(req, res) => {
     try {
         crud.getAll('products')
             .then(data => {
-                res.render('admin/products/products_table', {
+                res.json({
                     data
                 })
             })
@@ -16,6 +16,24 @@ exports.getAll = async(req, res) => {
     }
 }
 
+
+//recherche de prosuit 
+exports.SearchProduct = async(req, res) => {
+    try {
+        const toSearch = req.body.texte
+        new Promise((resolve, reject) => {
+            sq.query(`SELECT * FROM products WHERE name LIKE ? `, [`%${toSearch}%`], (err, result) => {
+                if (err) reject(new Error(err.message));
+                resolve(result)
+            })
+        }).then(data => {
+            res.json({ data })
+        })
+    } catch (e) {
+        console.log(e)
+    }
+
+}
 
 
 
@@ -27,7 +45,7 @@ exports.getProduct = async(req, res) => {
         new Promise((resolve, reject) => {
                 sql.query(`SELECT * FROM products WHERE id = ${id}`, (err, result) => {
                     if (err) {
-                        reject(new err.message);
+                        reject(new Error(err.message));
                     }
                     resolve(result)
                 })
@@ -68,9 +86,9 @@ exports.getProductsLength = async() => {
 
 
 //insert products in database
-exports.insert = async(req, res) => {
+exports.insertProduct = async(req, res) => {
     try {
-        let { name, price, description, img, category_id, vendor_id, active } = req.body
+        let { name, price, description, img, category_id, vendor_id, active } = req.params
         new Promise((resolve, reject) => {
                 sql.query(`INSERT INTO products(name, price, description, img, category_id, vendor_id, active)  VALUES (?,?,?,?,?,?,?)`, [name, price, description, img, category_id, vendor_id, active], (err, result) => {
                     if (err) {
@@ -81,9 +99,7 @@ exports.insert = async(req, res) => {
             })
             .then(value => {
                 res.json({
-                    statut: 200,
-                    message: "inserted",
-                    data: value
+                    value
                 })
             })
     } catch (e) {
@@ -93,7 +109,7 @@ exports.insert = async(req, res) => {
 
 
 // update products in database
-exports.update = async(req, res) => {
+exports.updateProduct = async(req, res) => {
     try {
         const id = req.params.id
         let { name, price, description, img, category_id, vendor_id, active } = req.body
@@ -119,7 +135,7 @@ exports.update = async(req, res) => {
 
 
 // delete elements
-exports.deletep = async(req, res) => {
+exports.deleteProduct = async(req, res) => {
     try {
         let id = req.params.id
         new Promise((resolve, rejecte) => {

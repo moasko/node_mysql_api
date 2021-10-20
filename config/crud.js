@@ -2,7 +2,7 @@ const sql = require('./DB.connect')
 
 exports.getAll = async(table) => {
     let promise = new Promise((resolve, rejects) => {
-        sql.query(`SELECT * FROM ${table}`, (err, result) => {
+        sql.query(`SELECT * FROM ${table} WHERE active=1 `, (err, result) => {
             if (err) {
                 rejects(new Error(err.message))
             }
@@ -31,3 +31,7 @@ exports.getByid = async(table, id) => {
 
     return promise
 }
+
+
+
+/*  */

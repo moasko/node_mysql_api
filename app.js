@@ -3,7 +3,7 @@ const dotenv = require('dotenv')
 const cors = require('cors');
 const path = require('path');
 const app = express();
-const expressLayouts = require('express-ejs-layouts');
+
 dotenv.config();
 
 
@@ -17,7 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
-app.use(expressLayouts);
 
 app.set('views', path.join(__dirname, './views'));
 

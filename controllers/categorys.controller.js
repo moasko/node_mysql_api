@@ -1,6 +1,6 @@
 const sql = require('../config/DB.connect');
 
-exports.getAll = async(req, res) => {
+exports.getAllCtegorys = async(req, res) => {
     try {
         new Promise((resolve, reject) => {
                 sql.query('SELECT * FROM category', (err, result) => {
@@ -48,7 +48,7 @@ exports.getCategory = async(req, res) => {
 
 
 //insert category in database
-exports.insert = async(req, res) => {
+exports.insertCategory = async(req, res) => {
     try {
         let { name } = req.body
         new Promise((resolve, reject) => {
@@ -73,7 +73,7 @@ exports.insert = async(req, res) => {
 
 
 // update category in database
-exports.update = async(req, res) => {
+exports.updateCategory = async(req, res) => {
     try {
         const id = req.params.id
         let { name } = req.body
@@ -99,7 +99,7 @@ exports.update = async(req, res) => {
 
 
 // delete elements
-exports.deletep = async(req, res) => {
+exports.deleteCategiry = async(req, res) => {
     try {
         let id = req.params.id
         new Promise((resolve, rejecte) => {
@@ -114,6 +114,54 @@ exports.deletep = async(req, res) => {
                 res.json({
                     statut: 200,
                     message: "deleted",
+                    data: data
+                })
+            })
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+//recherche de category
+exports.searchCategory = async(req, res) => {
+    try {
+        let { name } = req.body
+        new Promise((resolve, reject) => {
+                sql.query(`SELECT * FROM category WHERE name LIKE '%${name}%'`, (err, result) => {
+                    if (err) {
+                        reject(new Error(err.message))
+                    }
+                    resolve(result)
+                })
+            })
+            .then(data => {
+                res.json({
+                    statut: 200,
+                    message: "search",
+                    data: data
+                })
+            })
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+//get category by name
+exports.getCategoryByName = async(req, res) => {
+    try {
+        let { name } = req.body
+        new Promise((resolve, reject) => {
+                sql.query(`SELECT * FROM category WHERE name = '${name}'`, (err, result) => {
+                    if (err) {
+                        reject(new Error(err.message))
+                    }
+                    resolve(result)
+                })
+            })
+            .then(data => {
+                res.json({
+                    statut: 200,
+                    message: "search",
                     data: data
                 })
             })
