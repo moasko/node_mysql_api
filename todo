@@ -1,0 +1,18 @@
+products : id,name,price,description,img,category_id,vendor_id,active  
+{
+    "name":"apple watch d7 cadre rond",
+    "price":"9800",
+    "description":"<p>tres belle montre connecter de apple</p>",
+    "img":"img.jpg",
+    "category_id":"1",
+    "vendor_id":"1",
+    "active":"true"
+}
+
+
+vendors  :  id,psuedo,name,phone,password,baned
+
+category :  id,name
+
+admin    :  id,name,psuedo,password
+
