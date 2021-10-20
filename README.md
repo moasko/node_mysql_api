@@ -5,7 +5,10 @@
 $ cd moasko-dev-api
 $ npm install
 ```	
-
+## usage
+```bash
+$ npm start
+```
 ## Products
 | Method  | url | action |
 | --- | --- |---|
