@@ -1,19 +1,33 @@
 const sql = require('../config/DB.connect');
-const crud = require('../config/crud')
+const ProductsModule = require('../models/products.models')
+
+let prod = new ProductsModule("products")
 
 
 exports.getAllProducts = async(req, res) => {
     try {
-        crud.getAll('products')
-            .then(data => {
-                res.json({
-                    data
-                })
+        prod.getAllProducts((err, products) => {
+            if (err) throw err
+            res.json({
+                data: products
             })
-
+            console.log(products)
+        })
     } catch (e) {
         console.log(e)
     }
+}
+
+
+
+
+exports.getInitial = (text) => {
+    return text.replace(/\s+/, ' ')
+        .split(' ')
+        .slice(0, 2)
+        .map((v) => v && v[0].toUpperCase())
+        .join('');
+
 }
 
 

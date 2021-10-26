@@ -1,6 +1,6 @@
 const sql = require('./DB.connect')
 
-exports.getAll = async(table) => {
+exports.getAll = async(table, callback) => {
     let promise = new Promise((resolve, rejects) => {
         sql.query(`SELECT * FROM ${table} WHERE active=1 `, (err, result) => {
             if (err) {
@@ -9,9 +9,12 @@ exports.getAll = async(table) => {
             resolve(result)
         })
 
+    }).then((value) => {
+        callback(value)
     })
     return promise
 }
+
 
 
 

@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 
+
 dotenv.config();
 
 
@@ -24,7 +25,8 @@ app.set('views', path.join(__dirname, './views'));
 const indexRoute = require('./routes/index.router');
 const productRoute = require('./routes/products.route')
 const categoryRoute = require('./routes/category.route')
-const vendorsRoute = require('./routes/vendors.route')
+const vendorsRoute = require('./routes/vendors.route');
+const { start } = require('repl');
 
 app.use(indexRoute)
 app.use(productRoute)
