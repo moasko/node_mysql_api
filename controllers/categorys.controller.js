@@ -109,7 +109,7 @@ exports.deleteCategiry = async(req, res) => {
                     }
                     resolve(result)
                 })
-            })
+            }) 
             .then(data => {
                 res.json({
                     statut: 200,

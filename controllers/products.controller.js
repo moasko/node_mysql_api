@@ -3,7 +3,6 @@ const ProductsModule = require('../models/products.models')
 
 let prod = new ProductsModule("products")
 
-
 exports.getAllProducts = async(req, res) => {
     try {
         prod.getAllProducts((err, products) => {
@@ -19,6 +18,12 @@ exports.getAllProducts = async(req, res) => {
 }
 
 
+
+
+prod.searchProducts("apple", (err, data) => {
+    if (err) throw err;
+    console.log(data)
+})
 
 
 exports.getInitial = (text) => {
@@ -67,30 +72,6 @@ exports.getProduct = async(req, res) => {
             .then((response) => {
                 res.json({
                     res: response
-                })
-            })
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-
-//get products length
-
-exports.getProductsLength = async() => {
-    try {
-
-        new Promise((resolve, reject) => {
-                sql.query(`SELECT COUNT FROM products`, (err, result) => {
-                    if (err) {
-                        reject(new Error(err.message));
-                    }
-                    resolve(result);
-                })
-            })
-            .then(() => {
-                res.json({
-                    data: data
                 })
             })
     } catch (e) {
