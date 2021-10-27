@@ -3,9 +3,9 @@ exports.porductsOptions = {
     price: null,
     description: null,
     img: null,
-    cateory_id: null,
+    category_id: null,
     vendor_id: null,
-    ative: null
+    ative: true
 }
 
 
@@ -14,7 +14,12 @@ exports.categorysOptions = {
 }
 
 exports.vendorsOptions = {
-
+    psuedo: null,
+    name: null,
+    phone: null,
+    password: null,
+    adresse: null,
+    baned: null
 }
 
 

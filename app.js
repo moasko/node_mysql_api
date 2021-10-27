@@ -27,6 +27,7 @@ const productRoute = require('./routes/products.route')
 const categoryRoute = require('./routes/category.route')
 const vendorsRoute = require('./routes/vendors.route');
 const { start } = require('repl');
+start('$ ')
 
 app.use(indexRoute)
 app.use(productRoute)

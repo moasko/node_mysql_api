@@ -16,7 +16,7 @@ class CategoysModels {
     getAllCategorys(callback) {
         try {
             new Promise((resolve, reject) => {
-                sql.query(`SELECT * FROM category`, (err, result) => {
+                sql.query(`SELECT * FROM ${this.table}`, (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result)
                 })
@@ -34,15 +34,15 @@ class CategoysModels {
      * @param {Number} id 
      * @param {function} callback 
      */
-    getProduct(id, callback) {
+    getCategory(id, callback) {
         try {
             new Promise((resolve, reject) => {
-                sql.query('SELECT * FROM category WHERE id=?', [id], (err, result) => {
+                sql.query(`SELECT * FROM ${this.table} WHERE id=?`, [id], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result)
                 })
             }).then(data => {
-                callback(data)
+                callback(null, data)
             })
         } catch (e) {
             console.log(e)
@@ -53,10 +53,10 @@ class CategoysModels {
      * 
      * @param {object{}} options 
      */
-    insertCategory(options = categorysOptions) {
+    insertCategory(options = categorysOptions, callback) {
         try {
             new Promise((resolve, reject) => {
-                sql.query('INSERT INTO category(name) VALUE', [options.name], (err, result) => {
+                sql.query(`INSERT INTO ${this.table}(name) VALUE`, [options.name], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result)
                 })
@@ -69,10 +69,10 @@ class CategoysModels {
     }
 
 
-    upateCategory(id, options = categorysOptions, callback) {
+    updateCategory(id, options = categorysOptions, callback) {
         try {
             new Promise((resolve, reject) => {
-                sql.query(`UPDATE category SET name=? WHERE id=${id}`, [options.name], (err, result) => {
+                sql.query(`UPDATE ${this.table} SET name=? WHERE id=${id}`, [options.name], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
                 })
@@ -86,10 +86,10 @@ class CategoysModels {
     }
 
 
-    deleteProduct(id, callback) {
+    deleteCategory(id, callback) {
         try {
             new Promise((resolve, reject) => {
-                sql.query(`DELETE FROM category WHERE id=?`, [id], (err, result) => {
+                sql.query(`DELETE FROM ${this.table} WHERE id=?`, [id], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result)
                 })
@@ -102,3 +102,5 @@ class CategoysModels {
     }
 
 }
+
+module.exports = CategoysModels

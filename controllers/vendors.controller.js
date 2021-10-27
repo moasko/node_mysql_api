@@ -1,116 +1,98 @@
-const sql = require('../config/DB.connect')
-const crud = require('../config/crud')
+const VendorsModel = require('../models/vendors.models')
+let vendors = new VendorsModel('vendors')
+
 
 exports.getAllVendors = async(req, res) => {
-    try {
-        new Promise((resolves, rejected) => {
-            sql.query('SELECT * FROM vendors', (err, result) => {
-                if (err) {
-                    rejected(new Error(err.message))
-                }
-                resolves(result)
-            })
-        })
-
-        .then(data => {
+    vendors.getAllVendors((err, data) => {
+        if (!err) {
             res.json({
-                data
+                statut: 200,
+                message: "success",
+                data: data
             })
-        })
-    } catch (e) {
-        console.log(e)
-    }
+        } else {
+            res.json({
+                statut: 404,
+                message: "error"
+            })
+        }
+    })
 }
 
 exports.getVendorById = async(req, res) => {
     const id = req.params.id
-    try {
-        crud.getByid('vendors', id)
-            .then(data => {
-                res.json({
-                    data
-                })
+    vendors.getVendorById(id, (err, data) => {
+        if (!err) {
+            res.json({
+                statut: 200,
+                message: "success",
+                data: data
             })
-    } catch (e) {
-        console.log(e)
-    }
+        } else {
+            res.json({
+                statut: 404,
+                message: "error"
+            })
+        }
+    })
 }
 
 exports.insertVendor = async(req, res) => {
-    try {
-        let { psuedo, name, phone, password, adresse, baned } = req.body
-        new Promise((resolve, reject) => {
-            sql.query('INSERT INTO vendors(psuedo,name,phone,password,adresse,baned) VALUE(?,?,?,?,?,?)', [psuedo, name, phone, password, adresse, baned], (err, result) => {
-                if (err) {
-                    reject(new Error(err.message))
-                }
-                resolve(result)
+
+    let { psuedo, name, phone, password, adresse, baned } = req.body
+    vendors.insertVendor(psuedo, name, phone, password, adresse, baned, (err, data) => {
+        if (!err) {
+            res.json({
+                statut: 200,
+                message: "success",
+                data: data
             })
-        }).then((data) => {
-            data
-        })
-    } catch (e) {
-        console.log(e)
-    }
+        } else {
+            res.json({
+                statut: 404,
+                message: "error"
+            })
+        }
+    })
 
 }
 
 
 // update products in database
 exports.updateVendor = async(req, res) => {
-    try {
-        let { psuedo, name, phone, password, adresse, baned } = req.body
-        new Promise((resolve, reject) => {
-            sql.query('UPDATE vendors SET psuedo=?,name=?,phone=?,password=?,adresse=?,baned=? WHERE id=?', [psuedo, name, phone, password, adresse, baned, req.params.id], (err, result) => {
-                if (err) {
-                    reject(new Error(err.message))
-                }
-                resolve(result)
-            })
-        }).then((data) => {
+    let { psuedo, name, phone, password, adresse, baned } = req.body
+    vendors.updateVendor(psuedo, name, phone, password, adresse, baned, (err, data) => {
+        if (!err) {
             res.json({
-                data
+                statut: 200,
+                message: "success",
+                data: data
             })
-        })
-    } catch (e) {
-        console.log(e)
-    }
+        } else {
+            res.json({
+                statut: 404,
+                message: "error"
+            })
+        }
+    })
 }
 
 
 // delete elements
 exports.deleteVendor = async(req, res) => {
-    try {
-        new Promise((resolve, reject) => {
-            sql.query('DELETE FROM vendors WHERE id=?', [req.params.id], (err, result) => {
-                if (err) {
-                    reject(new Error(err.message))
-                }
-                resolve(result)
+    const id = req.body.id
+    vendors.deleteVendor(id, (err, data) => {
+        if (!err) {
+            res.json({
+                statut: 200,
+                message: "success",
+                data: data
             })
-        }).then((data) => {
-            data
-        })
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-//recherche de prosuit 
-exports.searchVendor = async(req, res) => {
-    try {
-        let { name } = req.body
-        new Promise((resolve, reject) => {
-            sql.query('SELECT * FROM vendors WHERE name LIKE ?', ['%' + name + '%'], (err, result) => {
-                if (err) {
-                    reject(new Error(err.message))
-                }
-                resolve(result)
+        } else {
+            res.json({
+                statut: 404,
+                message: "error"
             })
-        }).then((data) => {
-            data
-        })
-    } catch (e) {
-        console.log(e)
-    }
+        }
+    })
 }

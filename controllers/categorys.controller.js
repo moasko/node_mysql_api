@@ -1,171 +1,87 @@
-const sql = require('../config/DB.connect');
+const CategoysModels = require("../models/categorys.models");
+const category = new CategoysModels('category');
 
-exports.getAllCtegorys = async(req, res) => {
-    try {
-        new Promise((resolve, reject) => {
-                sql.query('SELECT * FROM category', (err, result) => {
-                    if (err) {
-                        reject(new err.message);
-                    }
-                    resolve(result)
-                })
-
+exports.getAllCategorys = (req, res) => {
+    category.getAllCategorys((err, categirys) => {
+        if (!err) {
+            res.status(200).send({
+                status: "succes",
+                data: categirys
             })
-            .then(data => {
-                res.json({
-                    data: data
-                })
+        } else {
+            res.status(404).send({
+                status: 'error',
             })
-
-
-    } catch (e) {
-        console.log(e)
-    }
+        }
+    })
 }
 
 
-//get category bay ID
-exports.getCategory = async(req, res) => {
-    try {
-        const id = req.params.id
-        new Promise((resolve, reject) => {
-                sql.query(`SELECT * FROM category WHERE id = ${id}`, (err, result) => {
-                    if (err) {
-                        reject(new err.message);
-                    }
-                    resolve(result)
-                })
+exports.getCategory = (req, res) => {
+    const par = req.params
+    category.getCategory(par.id, (err, category) => {
+        if (!err) {
+            res.status(200).send({
+                status: 'succes',
+                data: category
             })
-            .then((response) => {
-                res.json({
-                    res: response
-                })
+        } else {
+            res.status(404).send({
+                status: 'error'
             })
-    } catch (e) {
-        console.log(e)
-    }
+        }
+    })
+}
+
+exports.insertCategory = (req, res) => {
+    const params = req.body
+    const name = params.name
+    category.insertCategory({ name }, (err, result) => {
+        if (!err) {
+            res.status(200).send({
+                status: 'succes',
+                data: result
+            })
+        } else {
+            res.status(404).send({
+                status: 'error'
+            })
+        }
+    })
+}
+
+exports.updateCategory = (req, res) => {
+    const params = req.body
+    const id = params.id
+    const name = params.name
+    category.updateCategory(id, { name }, (err, result) => {
+        if (!err) {
+            res.status(200).send({
+                status: 'succes',
+                data: result
+            })
+        } else {
+            res.status(404).send({
+                status: 'error'
+            })
+        }
+    })
 }
 
 
-//insert category in database
-exports.insertCategory = async(req, res) => {
-    try {
-        let { name } = req.body
-        new Promise((resolve, reject) => {
-                sql.query(`INSERT INTO category(name)  VALUES (?)`, [name], (err, result) => {
-                    if (err) {
-                        reject(new Error(err.message))
-                    }
-                    resolve(result)
-                })
+exports.deleteCategory = (req, res) => {
+    const params = req.body
+    const id = params.id
+    category.deleteCategory(id, (err, result) => {
+        if (!err) {
+            res.status(200).send({
+                status: 'succes',
+                data: result
             })
-            .then(value => {
-                res.json({
-                    statut: 200,
-                    message: "inserted",
-                    data: value
-                })
+        } else {
+            res.status(404).send({
+                status: 'error'
             })
-    } catch (e) {
-        console.loge(e)
-    }
-}
-
-
-// update category in database
-exports.updateCategory = async(req, res) => {
-    try {
-        const id = req.params.id
-        let { name } = req.body
-        new Promise((resolve, reject) => {
-                sql.query(`UPDATE category SET  name=? WHERE id = ${id}`, [name], (err, result) => {
-                    if (err) {
-                        reject(new Error(err.message))
-                    }
-                    resolve(result)
-                })
-            })
-            .then(value => {
-                res.json({
-                    statut: 200,
-                    message: "updated",
-                    data: value
-                })
-            })
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-
-// delete elements
-exports.deleteCategiry = async(req, res) => {
-    try {
-        let id = req.params.id
-        new Promise((resolve, rejecte) => {
-                sql.query(`DELETE FROM category WHERE id=?`, [id], (err, result) => {
-                    if (err) {
-                        rejecte(new Error(err.message))
-                    }
-                    resolve(result)
-                })
-            }) 
-            .then(data => {
-                res.json({
-                    statut: 200,
-                    message: "deleted",
-                    data: data
-                })
-            })
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-//recherche de category
-exports.searchCategory = async(req, res) => {
-    try {
-        let { name } = req.body
-        new Promise((resolve, reject) => {
-                sql.query(`SELECT * FROM category WHERE name LIKE '%${name}%'`, (err, result) => {
-                    if (err) {
-                        reject(new Error(err.message))
-                    }
-                    resolve(result)
-                })
-            })
-            .then(data => {
-                res.json({
-                    statut: 200,
-                    message: "search",
-                    data: data
-                })
-            })
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-//get category by name
-exports.getCategoryByName = async(req, res) => {
-    try {
-        let { name } = req.body
-        new Promise((resolve, reject) => {
-                sql.query(`SELECT * FROM category WHERE name = '${name}'`, (err, result) => {
-                    if (err) {
-                        reject(new Error(err.message))
-                    }
-                    resolve(result)
-                })
-            })
-            .then(data => {
-                res.json({
-                    statut: 200,
-                    message: "search",
-                    data: data
-                })
-            })
-    } catch (e) {
-        console.log(e)
-    }
+        }
+    })
 }
